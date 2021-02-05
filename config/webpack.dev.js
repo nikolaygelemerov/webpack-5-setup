@@ -10,10 +10,36 @@ const devConfig = {
   },
   devServer: {
     port: 8081,
+    // When using the HTML5 History API, the index.html page will likely have to be served in place of any 404 responses.
+    // Enable devServer.historyApiFallback by setting it to true
     historyApiFallback: {
       index: 'index.html'
     },
     open: true
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [{ loader: 'style-loader' }, { loader: 'css-loader' }]
+      },
+      {
+        test: /\.(scss|sass)$/,
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader' },
+          { loader: 'sass-loader' },
+          {
+            loader: 'sass-resources-loader',
+            options: {
+              resources: [
+                path.resolve(__dirname, '../src/styles/constants.scss')
+              ]
+            }
+          }
+        ]
+      }
+    ]
   },
   plugins: [
     new HTMLWebpackPlugin({

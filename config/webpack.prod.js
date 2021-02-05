@@ -3,7 +3,6 @@ const { merge } = require('webpack-merge');
 const baseConfig = require('./webpack.base.js');
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const config = {
   mode: 'production',
@@ -11,7 +10,7 @@ const config = {
     filename: 'static/js/[name].[contenthash:8].bunde.js', // Tells webpack where to write hashed bundle.js file
     chunkFilename: 'static/js/[name].[contenthash:8].chunk.js', // Tells webpack where to write hashed chunk.js file
     path: path.resolve(__dirname, '../dist'), // Tells webpack where the build folder should be
-    publicPath: '/dist/' // Tels webpack where to serve public assets from related to base url
+    publicPath: '/' // Tels webpack where to serve public assets from related to base url. In order to run index.html from Live Server just pass '/dist'
   },
   module: {
     rules: [
@@ -38,7 +37,6 @@ const config = {
     ]
   },
   plugins: [
-    new OptimizeCssAssetsPlugin(),
     new MiniCSSExtractPlugin({
       filename: 'static/css/[name].[contenthash:8].css',
       chunkFilename: 'static/css/[name].[contenthash:8].chunk.css'

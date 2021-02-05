@@ -1,5 +1,3 @@
-const path = require('path');
-
 module.exports = {
   module: {
     rules: [
@@ -9,30 +7,11 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env'],
-            plugins: ['@babel/plugin-transform-runtime']
+            // Implemented in .babelrc in orded to handle server/main.js
+            // presets: ['@babel/preset-env'],
+            // plugins: ['@babel/plugin-transform-runtime']
           }
         }
-      },
-      {
-        test: /\.css$/,
-        use: [{ loader: 'style-loader' }, { loader: 'css-loader' }]
-      },
-      {
-        test: /\.(scss|sass)$/,
-        use: [
-          { loader: 'style-loader' },
-          { loader: 'css-loader' },
-          { loader: 'sass-loader' },
-          {
-            loader: 'sass-resources-loader',
-            options: {
-              resources: [
-                path.resolve(__dirname, '../src/styles/constants.scss')
-              ]
-            }
-          }
-        ]
       },
       {
         test: /\.html$/,
@@ -53,7 +32,16 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: `static/[path][name].[ext]`
+              name(resourcePath) {
+                const delimeter = '_' + Math.random().toString(36).substr(2, 9);
+                const folders = resourcePath
+                  .replace(/\\|\//g, delimeter)
+                  .split(delimeter);
+
+                const fileParentFolderName = folders[folders.length - 2];
+
+                return `static/assets/${fileParentFolderName}/[name].[ext]`;
+              }
             }
           }
         ]
