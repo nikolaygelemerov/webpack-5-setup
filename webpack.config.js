@@ -178,14 +178,16 @@ module.exports = (env, argv) => {
     // source-map in prod adds only a URL string to the .map file
     devtool: isDev ? 'eval-source-map' : 'source-map',
     devServer: {
-      clientLogLevel: 'silent',
+      client: {
+        logging: 'error',
+        overlay: true
+      },
+      compress: true,
       historyApiFallback: {
         index: 'http://localhost:8080'
       },
       hot: true,
-      noInfo: true,
-      open: true,
-      stats: 'minimal'
+      open: true
     },
     optimization: {
       minimizer: []
